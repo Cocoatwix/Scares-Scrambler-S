@@ -1,0 +1,7 @@
+Hey! Thanks for trying out the Scares Scrambler! If you're not sure how to work this thing, then watch the tutorial videos I made at my YouTube channel (scares009).
+
+Like it says in the about window, feel free to mess around in the source code and add your own things. If you want to release your own modified version, just be sure to give me credit somewhere, and I'll be happy! :)
+
+Last point, and I think this one is obvious. This corrupter is still young (two years, give or take). There's probably some bugs that slipped through me and the bugtesters. Don't expect this to work 100% perfectly; this program was made just to have fun! Don't be afraid to reach out if you experience any problems.
+
+Anyways, that's really all I have to say. Enjoy the corrupter!
