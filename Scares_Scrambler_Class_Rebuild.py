@@ -15,8 +15,8 @@ from Theme_Class_File import *
 '''Hello, anyone reading this! Don't mind the disgusting code in some places; I'm not that good at coding, so don't expect it to work perfectly
 and/or look pretty! Anyways, hopefully you'll find some enjoyment messing around with this corrupter. Have fun!'''
 
-buildNumber = "18"
-versionNumber = "v1.105"
+buildNumber = "19"
+versionNumber = "v1.2"
 goodIcon = "Assets/favi16.ico"
 
 '''for x in range(0, len(__file__)): #Getting the folder path, so that pictures work properly on cmd
@@ -279,6 +279,11 @@ def get_file_name(text, event=None):
     global fileName
     '''Gets the file name that the user entered'''
     newFileName = text.get(1.0, END)[:-1]
+    if newFileName == ("Enter new file name..." or newFileName == "") and fileName == "":
+        newFileName = ""
+    elif newFileName == "Enter new file name..." or newFileName == "":
+        newFileName = "CorruptedFile" #Default file name
+        
     p = check_for_char(newFileName)
 
     if p == False:
@@ -309,12 +314,12 @@ def about_program_window(event=None):
     aboutWindow.title("About Scares Scrambler Build "+buildNumber+" "+"("+versionNumber+")")
     aboutWindow.iconbitmap(goodIcon)
 
-    infoLabel = Label(aboutWindow, text="Program created by your man, Scares. Bugtested by Telic, Ellex, Tyler, Dubby, Scott, and Rare.\n"
+    infoLabel = Label(aboutWindow, text="Program created by your man, Scares.\n"
                       "This is an open-source project, so feel free to mess around in the code and stuff.\n"
-                      "If you want to release your own modified version of this project, just credit me! :3\n"
+                      "If you want to release your own modified version of this project, just credit me and I'll be happy! :3\n\n"
                       "I'd also like to extend a huge thank you to anyone who bothered to try this thing!\n"
-                      "It isn't the best piece of software out there, but I think it's pretty ok.")
-    infoLabel2 = Label(aboutWindow, text="Thank you for being a part of this project. Here's to a third year of crappy software!")
+                      "It isn't the best piece of software out there, but I think it's pretty cool.")
+    infoLabel2 = Label(aboutWindow, text="Thank you for being a part of this project. Have fun!")
 
     aboutWindow["bg"] = colorList[2]
     goodLogo = PhotoImage(master=aboutWindow, file=colorList[4])
@@ -327,6 +332,33 @@ def about_program_window(event=None):
     infoLabel2.pack()
 
     aboutWindow.mainloop()
+
+
+def credits_window(event=None):
+    '''Window to credit bugtesters and any other contributors'''
+    creditsWindow = Tk()
+    creditsWindow.title("Scares Scrambler Build " +buildNumber+" "+"("+versionNumber+") Contributors")
+    creditsWindow.iconbitmap(goodIcon)
+    creditsWindow["bg"] = colorList[2]
+
+    label = Label(creditsWindow, text="Here's a list of people who've contributed to this project "
+                                       "in one way or another! \n Thank you to everyone for your support!",
+                  bg=colorList[2], fg=colorList[1])
+    label2 = Label(creditsWindow, text="Dubby (Bugtester) \n"
+                                       "Ellestice (Bugtester) \n"
+                                       "Rare (Bugtester) \n"
+                                       "Tyler (Bugtester) \n"
+                                       "Scott (Bugtester, Moral Supporter) \n"
+                                       "Telic (Bugtester, Moral Supporter) \n"
+                                       "Ircluzar (Supporter, I think)", bg=colorList[2], fg=colorList[1])
+    goodLogo = PhotoImage(master=creditsWindow, file=colorList[4])
+    label3 = Label(creditsWindow, image=goodLogo)
+
+    label.pack()
+    label2.pack()
+    label3.pack()
+
+    creditsWindow.mainloop()
 
 
 def corrupt_file(event=None, determinedVariables=[]):
@@ -444,7 +476,7 @@ def corrupt_file(event=None, determinedVariables=[]):
             strCorruptRange = str(corruptRange)
             userFileLabel["text"] = "0/"+strCorruptRange+" (0%) corrupted"
 
-            print(blockSpace)
+            #print(blockSpace)
 
             while True: #Main corruption loop
 
@@ -525,7 +557,7 @@ def corrupt_file(event=None, determinedVariables=[]):
             if theEngine.name == "Blender Algorithm":
                 corruptingVariables[3].close()
         else:
-            messagebox.showwarning("Woah there partner!", "Make sure to fill in the required values!")
+            messagebox.showwarning("Woah there partner!", "Make sure to fill in the required values properly!")
             hide_userFileLabel() #Fixing any stuck progress bars
             baseFile.close()
             corruptedFile.close()
@@ -535,7 +567,7 @@ def corrupt_file(event=None, determinedVariables=[]):
 
         stopCorrupt = True
     except TypeError:
-        messagebox.showwarning("Woah there partner!", "Make sure to fill in the required values!")
+        messagebox.showwarning("Woah there partner!", "Make sure to fill in the required values properly!")
         hide_userFileLabel() #Fixing any stuck progress bars
         try:
             baseFile.close()
@@ -554,7 +586,11 @@ def corrupt_repeat_window(event=None):
     global oldFileName
 
     repeatWindow = Tk()
-    repeatWindow.title("Corrupt and Repeat")
+    if themeVar.get() == 3: #Dubby theme
+        repeatWindow.title("Dubby and Repeat")
+    else:
+        repeatWindow.title("Corrupt and Repeat")
+        
     repeatWindow.iconbitmap(goodIcon)
     repeatWindow.geometry("300x500")
 
@@ -616,7 +652,7 @@ def corrupt_repeat(entries, event=None):
     if newFolder and "newFolder" not in newFileName: #If we're making a new folder
         p = check_for_char(newFileName, "\\")
         q = check_for_char(__file__, "\\")
-        print(__file__[:q], "wow")
+        #print(__file__[:q], "wow")
                 
         if p != False: #If the newFileName is a full path
             if not os.path.exists(newFileName[:p]+"\\newFolder"):
@@ -628,11 +664,8 @@ def corrupt_repeat(entries, event=None):
                 os.mkdir(__file__[:q]+"\\newFolder") #Make new directory if needed
                 
             newFileName = __file__[:q] + "\\newFolder\\" + newFileName #Making sure the new folder gets added to path correctly
-        print(p, "p")
     elif not newFolder:
         newFileName = oldFileName
-
-    print(newFileName)
 
     variables = []
     ogFileName = newFileName
@@ -757,7 +790,7 @@ def save_presets(newPresetEntry, event=None):
     for x in presetList:
         presetFile.write(str(x)+"\n")
 
-    #preaetFile.write("~~End~~")
+    #presetFile.write("~~End~~")
 
     presetFile.close()
     newPresetWindow.destroy() #Close the preset window
@@ -1118,6 +1151,7 @@ optionsMenu.add_checkbutton(label="Auto Insert Auto End", var=autoEndVar)
 optionsMenu.add_checkbutton(label="Hide File Labels", command=hide_userFileLabel, var=hideVar)
 
 aboutMenu.add_command(label="Info", accelerator="Alt+I", command=about_program_window)
+aboutMenu.add_command(label="Contributors", command=credits_window)
 
 #----------------------------------------------------------------------------------
 
