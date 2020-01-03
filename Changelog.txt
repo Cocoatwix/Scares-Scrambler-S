@@ -1,6 +1,0 @@
-Build 1A-5A: Alpha builds, only for bugtesters.
-Build 6A-7A: Changed the way exponential spacing works. (Added a max spacing)
-Build 8RC: Added a safe-guard for values that the user enters.
-Build 9: Possible Release Version, with readme and .py files. (tutorial file was also included)
-
-Tentavite Edit: Fixed a bug with negative numbers in the incrementer engine

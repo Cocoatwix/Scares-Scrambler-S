@@ -1,0 +1,67 @@
+Step 1: Opening the corruptor.
+Just unzip the zip file and open the exe file, easy.
+
+Step 2: Choosing your file to corrupt.
+Go to File > Choose File, or hit Alt+F, and it'll open a window to enter the file. The first box is where you put the path to the file you want to corrupt, and the second box is the path to where you want the corrupted file to be saved. Make sure to put the file name at the end of each path, along with the file extension (.exe, .bin, etc.) If the path isn't working, try using a path without spaces, I'm still not sure if paths with spaces work or not. If all else fails, then just drag the file you want to corrupt into the same folder as the Scares Scrambler, and just enter the file name for both. In this case, the corrupted file will be saved in that folder.
+
+Step 3: Corrupting
+
+-Engines:
+There are a few different engines to choose from, and they all do different things.
+The Incrementer Engine will add a value to each byte it corrupts.
+The Randomizer Engine will randomize the bytes it corrupts.
+The Scrambler Engine will take bytes and switch their places with one another.
+The Copier Engine will take bytes and copy and paste them somewhere else in the file.
+The Tilter Engine will take bytes and replace them with other bytes.
+The Mixer Engine isn't even coded yet. XD
+If you want to understand more about each engine, try experimenting with a text document!
+
+-Basic Settings:
+These basic settings are shared among each engine.
+The Start Value is which byte you want to start corrupting from in the file.
+The End Value is which byte you want to stop corrupting at in the file.
+The Inc Value is how much will be added or subtracted from the values when using the "+/-" buttons.
+The Auto End checkbutton will automatically detect the end of the file and stop corrupting there.
+The "+/-" buttons can be left and right clicked.
+The Block Size is how many bytes you want to corrupt at a time.
+
+Block Size 1 would look like: #aa#aa#aa#aa# (where "#" is a corrupted byte and "a" is an uncorrupted byte)
+Block Size 3 would look like: ###aa###aa###aa
+
+Linear, Exponential, and Random radiobuttons control what type of spacing to use between corrupted bytes. Linear will use the same number of bytes for the space between corrupted blocks. Exponential will space out the corrupted blocks according to an exponent. Random will randomize the space between each corrupted block.
+
+Block Space/Exponent/Upper Bound: This controls the spacing between corrupted blocks. 
+
+Block Space is how many uncorrupted bytes between each corrupted block, when using Linear spacing.
+Exponent is the exponent used when Exponential spacing is selected. (this value can be a decimal)
+Upper Bound is the max number of uncorrupted bytes between each corrupted block, when using Random spacing.
+
+The Random buttons generate a random value for each value box, between 0 and 255.
+
+-Special Values:
+There are a few special options for each engine.
+
+Incrementer Engine:
+Add/Subtract Value controls what value to add to each corrupted byte. (this value can be negative)
+
+Scrambler Engine/Copier Engine:
+Block Gap Value controls what spacing is used between swapped or copied bytes. This value is different from Block Space, and may need some experimentation to fully understand. (this value can be negative when using the Copier Engine)
+
+Tilter Engine:
+Exclusive checkbutton changes the Tilter Engine to only corrupt bytes that match the Replace Value, if selected.
+Replace With Value is the value that the Tilter Engine changes each corrupted byte to.
+
+Mixer Engine:
+mYSTERYmYSTERYmYSTERYmYSTERYmYSTERYmYSTERYmYSTERYmYSTERYmYSTERYmYSTERYmYSTERYmYSTERYmYSTERYmYSTERY
+
+
+Once you've selected an engine, and adjusted the values to your liking, then press the Corrupt button at the bottom of the window. The corrupting process might take a couple seconds, depending on the file selected. If the program says "Not Responding", give it a couple seconds, and if nothing happens, then you can consider it a crash. If the program becomes responsive again, then you know the corruption was a success! Wait until the Scares Scrambler is active again before attempting to use the corrupted file.
+
+
+
+And that's about it. If you still have questions, feel free to contact scares009, or one of the bugtesters to ask any questions.
+
+
+
+
+
