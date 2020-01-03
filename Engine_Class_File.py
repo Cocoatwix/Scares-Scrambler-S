@@ -5,13 +5,19 @@ from tkinter import *
 from tkinter import (Tk, ttk)
 
 import random
-#import copy #Allows me to copy variables without linking things (giving addresses instead of values)
+#import copy 
 
 '''
-Thanks to the following stackoverflow questions for helping me with lambda functions:
+Thanks to the following stackoverflow questions for...
+
+Helping me with lambda functions:
 stackoverflow.com/questions/16215045 (Q: evolutionizer, A: eumiro)
 stackoverflow.com/questions/21148471 (Q: Dan, A: iCodez)
 stackoverflow.com/questions/31664578 (Q: abc, A: Clodion)
+
+Helping change theme colours:
+https://stackoverflow.com/questions/14284492 (Q: user1967718, A: Bryan Oakley)
+https://stackoverflow.com/questions/55311242 (Q: wowwee, A: Henry Yik)
 '''
 
 class Engine_Class:
@@ -31,7 +37,7 @@ class Engine_Class:
         for x in range(0, len(entries)): #Creating list of entries
             self.entries.append([Label(mainFrame, text=entries[x]), Entry(self.mainFrame)])
             self.buttons.append(Button(self.mainFrame, text="Random",
-                                command=lambda x=x: self.random_value(self.entries[x][1]))) #Change this later
+                                command=lambda x=x: self.random_value(self.entries[x][1]))) #:)
 
         self.radioButtons = []
         self.radioButtonVariables = []
@@ -69,8 +75,7 @@ class Engine_Class:
         for x in range(0, len(self.entryAlts)):
             if self.entryAlts[x] != [None]:
                 for y in self.radioButtons[x]:
-                    funVar = x #This variable prevents the address being copied into the function
-                    y.config(command=lambda x=x: self.switch_entry_text(x)) #
+                    y.config(command=lambda x=x: self.switch_entry_text(x))
         
 
     def get_corruption_variables(self):
@@ -120,7 +125,8 @@ class Engine_Class:
         '''Recolors the layout stuff with given colors'''
         for x in range(0, len(self.entries)):
             self.entries[x][0].config(bg=colorList[2], fg=colorList[1]) #Labels
-            self.entries[x][1].config(bg=colorList[0], fg=colorList[1]) #Entries
+            self.entries[x][1].config(bg=colorList[0], fg=colorList[1], insertbackground=colorList[1],
+                                      selectbackground=colorList[5]) #Entries
             self.buttons[x].config(bg=colorList[2], fg=colorList[1],
                                    activebackground=colorList[0], activeforeground=colorList[1]) #Buttons
 
@@ -164,6 +170,7 @@ class Engine_Class:
     def random_value(self, entry):
         '''Generates a random value for an entry'''
         '''This is basically copied from main file'''
+        #I should make this more general, to make it work with the buttons in the main file
         entry.delete(0, END)
         if self.hexadecimalMode:
             ran1 = random.randint(0, 15)
