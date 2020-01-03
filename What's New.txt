@@ -1,0 +1,18 @@
+Hey y'all! It's been a while since I updated this thing! Here's a list of (mostly) everything that's new in this update:
+
+-Added a proper "Open File" window for selecting files to corrupt.
+-Added a way to save and load corruption presets. The corrupter will automatically open the first preset file it finds when opened.
+-Added hexadecimal support.
+-Added a dark mode.
+-Added an icon for the window and .exe file.
+-Added the ability to change algorithms with the arrow keys.
+-Improved some UI stuff.
+-Improved some code (not that you care).
+
+-Fixed a bug with negative numbers in the "Incrementer" algorithm.
+-Fixed a bug with the random block space that caused the corrupter to freeze.
+-Fixed a bug with exponent spacing where the exponent would get too big and wouldn't corrupt.
+
+-Removed Herobrine.
+
+Hope you have fun with this new stuff! :)))
