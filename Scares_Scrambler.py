@@ -5,7 +5,7 @@ from tkinter import ttk
 import os
 import random
 
-'''Hello anyone reading this! Don't mind the disgusting code in some places. I'm not that good at coding, so dpn't expect it to work perfectly!
+'''Hello anyone reading this! Don't mind the disgusting code in some places. I'm not that good at coding, so don't expect it to work perfectly!
 Anyways, hopefully you'll find some enjoyment messing around with this corruptor. Ciao!'''
 
 root = Tk()
@@ -345,7 +345,7 @@ def add_corrupt_engine(baseFile, corruptedFile, blockSpace):
             break
         currentByte = int.from_bytes(currentByte, byteorder="big")
         currentByte += int(addValueEntry.get())
-        if currentByte > 255: #If it's bigger than a byte
+        if currentByte > 255 or currentByte < 0: #If it's bigger than a byte OR if it's a negative
             currentByte = currentByte % 256
         currentByte = (currentByte).to_bytes(1, byteorder="big")
         corruptedFile.write(currentByte)

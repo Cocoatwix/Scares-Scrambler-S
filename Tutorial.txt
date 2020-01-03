@@ -1,11 +1,10 @@
 Step 1: Opening the corruptor.
 Just unzip the zip file and open the exe file, easy.
 
-Step 2: Choosing your file to to corrupt.
+Step 2: Choosing your file to corrupt.
 Go to File > Choose File, or hit Alt+F, and it'll open a window to enter the file. The first box is where you put the path to the file you want to corrupt, and the second box is the path to where you want the corrupted file to be saved. Make sure to put the file name at the end of each path, along with the file extension (.exe, .bin, etc.) If the path isn't working, try using a path without spaces, I'm still not sure if paths with spaces work or not. If all else fails, then just drag the file you want to corrupt into the same folder as the Scares Scrambler, and just enter the file name for both. In this case, the corrupted file will be saved in that folder.
 
 Step 3: Corrupting
-This is probably the part most people will need help with, so I'll try to organize it in an easy to read manner.
 
 -Engines:
 There are a few different engines to choose from, and they all do different things.
@@ -29,7 +28,7 @@ The Block Size is how many bytes you want to corrupt at a time.
 Block Size 1 would look like: #aa#aa#aa#aa# (where "#" is a corrupted byte and "a" is an uncorrupted byte)
 Block Size 3 would look like: ###aa###aa###aa
 
-Linear, Exponential, and Random radiobuttons control what type of spacing to use between corrupted bytes. Linear will use the same number of bytes for the space between each corrupted block. Exponential will space out the corrupted blocks according to an exponent. Random will randomize the space between each corrupted block.
+Linear, Exponential, and Random radiobuttons control what type of spacing to use between corrupted bytes. Linear will use the same number of bytes for the space between corrupted blocks. Exponential will space out the corrupted blocks according to an exponent. Random will randomize the space between each corrupted block.
 
 Block Space/Exponent/Upper Bound: This controls the spacing between corrupted blocks. 
 
@@ -56,7 +55,7 @@ Mixer Engine:
 mYSTERYmYSTERYmYSTERYmYSTERYmYSTERYmYSTERYmYSTERYmYSTERYmYSTERYmYSTERYmYSTERYmYSTERYmYSTERYmYSTERY
 
 
-Once you've selected an engine, and adjusted the values to your , then press the Corrupt button at the bottom of the window. The corrupting process might take a couple seconds, depending on the file selected. If the program says "Not Responding", give it a couple seconds, and if nothing happens, then you can consider it a crash. If the program becomes responsive again, then you know the corruption was a success! Wait until the Scares Scrambler is active again before attempting to use the corrupted file.
+Once you've selected an engine, and adjusted the values to your liking, then press the Corrupt button at the bottom of the window. The corrupting process might take a couple seconds, depending on the file selected. If the program says "Not Responding", give it a couple seconds, and if nothing happens, then you can consider it a crash. If the program becomes responsive again, then you know the corruption was a success! Wait until the Scares Scrambler is active again before attempting to use the corrupted file.
 
 
 
