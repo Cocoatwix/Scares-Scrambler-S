@@ -15,8 +15,8 @@ from Theme_Class_File import *
 '''Hello, anyone reading this! Don't mind the disgusting code in some places; I'm not that good at coding, so don't expect it to work perfectly
 and/or look pretty! Anyways, hopefully you'll find some enjoyment messing around with this corrupter. Have fun!'''
 
-buildNumber = "16"
-versionNumber = "v1.103"
+buildNumber = "17"
+versionNumber = "v1.104"
 goodIcon = "Assets/favi16.ico"
 
 '''for x in range(0, len(__file__)): #Getting the folder path, so that pictures work properly on cmd
@@ -40,6 +40,7 @@ Engines:
     3 = Copier
     4 = Tilter
     5 = Smoother
+    6 = Blender
 
 Unbinding is apparently possible: foo.unbind("<Button-1>")
 showerror, showinfo, showwarning, _show? ~These are all message box types.
@@ -291,7 +292,7 @@ def about_program_window(event=None):
     aboutWindow.title("About Scares Scrambler Build "+buildNumber+" "+"("+versionNumber+")")
     aboutWindow.iconbitmap(goodIcon)
 
-    infoLabel = Label(aboutWindow, text="Program created by your man, Scares. Bugtested by Telic, Ellex, Tyler, and Scott.")
+    infoLabel = Label(aboutWindow, text="Program created by your man, Scares. Bugtested by Telic, Ellex, Tyler, Dubby, and Scott.")
     infoLabel2 = Label(aboutWindow, text="This is an open-source project, so feel free to mess around in the code and stuff.")
     infoLabel3 = Label(aboutWindow, text="If you want to release your own modified version of this project, just credit me! :3")
     infoLabel4 = Label(aboutWindow, text="I'd also like to extend a huge thank you to anyone who bothered to try this thing!")
@@ -431,7 +432,7 @@ def corrupt_file(event=None, determinedVariables=[]):
             corruptRange = endValue - startValue #Used for progress bar
             nextUpdate = startValue + 100000 #Tells the window when to update (maybe fix hardcoded number later)
             strCorruptRange = str(corruptRange)
-            userFileLabel["text"] = "0/"+str(endValue)+" (0%) corrupted"
+            userFileLabel["text"] = "0/"+strCorruptRange+" (0%) corrupted"
 
             while True: #Main corruption loop
 
@@ -453,18 +454,17 @@ def corrupt_file(event=None, determinedVariables=[]):
 
                 currentPos = baseFile.tell() #Getting current pos
 
-                if theEngine.name in ["Copier Algorithm", "Smoother Algorithm"]: #Making sure file size stays constant
-                    if (currentPos+blockSize+abs(corruptingVariables[0][2])) >= endValue: #We've reached the end of corrupting
+                if theEngine.name == "Smoother Algorithm":
+                    if currentPos+tempSpace+2*corruptingVariables[0][0] >= endValue:
                         userFileLabel["text"] = "Copying uncorrupted contents..."
                         root.update()
                         break
-                '''if theEngine.name != "Tilter Algorithm":
-                    if (currentPos+blockSize) >= endValue: #If we've reached the end of the corrupting
+                if theEngine.name == "Blender Algorithm": #Making sure we don't keep corrupting past the end of the file
+                    if currentPos >= endValue:
                         userFileLabel["text"] = "Copying uncorrupted contents..."
                         root.update()
                         break
-                        #This isn't needed anymore, as the algos can manage going off the edge'''
-                if currentPos == previousPos:
+                elif currentPos == previousPos:
                     userFileLabel["text"] = "Copying uncorrupted contents..."
                     root.update()
                     break
@@ -472,8 +472,9 @@ def corrupt_file(event=None, determinedVariables=[]):
                 previousPos = currentPos
 
                 if currentPos > nextUpdate: #Prevents excess method calls
-                    userFileLabel["text"] = str(currentPos-startValue)+"/"+str(endValue-startValue)+" ("+str(
-                        round(((currentPos-startValue)/corruptRange)*100))+"%) corrupted" 
+                    if currentPos <= endValue:
+                        userFileLabel["text"] = str(currentPos-startValue)+"/"+strCorruptRange+" ("+str(
+                            round(((currentPos-startValue)/corruptRange)*100))+"%) corrupted"
                     root.update() #Updates userFileLabel with progress bar
                     nextUpdate = currentPos + 100000
 
@@ -486,6 +487,8 @@ def corrupt_file(event=None, determinedVariables=[]):
 
         baseFile.close()
         corruptedFile.close()
+        if theEngine.name == "Blender Algorithm":
+            corruptingVariables[3].close()
             
     except ValueError:
         messagebox.showwarning("Woah there partner!", "The values you entered were not valid. Make sure that all the values were entered correctly. "
@@ -494,23 +497,30 @@ def corrupt_file(event=None, determinedVariables=[]):
         baseFile.close()
         corruptedFile.close()
         root.update() #Updates userFileLabel with progress bar
+        if theEngine.name == "Blender Algorithm":
+            corruptingVariables[3].close()
     except IndexError:
         if baseFile.read() == b"": #Checking to see if endValue was too big
             hide_userFileLabel() #Changing from progress bar to file name, if needed
             baseFile.close()
             corruptedFile.close()
-            print(":o")
+            if theEngine.name == "Blender Algorithm":
+                corruptingVariables[3].close()
         else:
             messagebox.showwarning("Woah there partner!", "Make sure to fill in the required values!")
             hide_userFileLabel() #Fixing any stuck progress bars
             baseFile.close()
             corruptedFile.close()
+            if theEngine.name == "Blender Algorithm":
+                corruptingVariables[3].close()
         root.update() #Updates userFileLabel with progress bar
     except TypeError:
         messagebox.showwarning("Woah there partner!", "Make sure to fill in the required values!")
         hide_userFileLabel() #Fixing any stuck progress bars
         baseFile.close()
         corruptedFile.close()
+        if theEngine.name == "Blender Algorithm":
+            corruptingVariables[3].close()
         root.update() #Updates userFileLabel with progress bar'''
 
 
@@ -851,7 +861,7 @@ def theme_switch(event=None):
     #SystemButtonFace - greyish bg
     #SystemButtonText - text colour
     #SystemWindow - Entry Colour (white) and black select colour for checks and radios
-    print(themeVar.get())
+    #print(themeVar.get())
 
     colorList = themes[themeVar.get()-1].colorList #Changes the colors we're using
     bannerLabel["image"] = colorList[3] #Changes the banner
@@ -880,24 +890,25 @@ def theme_switch(event=None):
         corruptRepeatButton["text"] = "Corrupt and Repeat"
 
 
-def select_listbox_item(listbox, pathList, tempFileName, curselection=":)", event=None):
+def select_listbox_item(listbox, pathList, tempFileName, curselection=":)", pathLabel=":)", event=None):
     '''Returns an item within a given listbox'''
     global newFileName
 
     if curselection == ":)": #Go forward
         if listbox.curselection() != (): #Preventing tuple index errors
-            tempFileName += pathList.copy()[listbox.curselection()[0]]+"/"
-            print(pathList[listbox.curselection()[0]], "pTA")
-            print(tempFileName, "nFN")
+            tempFileName += pathList.copy()[listbox.curselection()[0]]+"\\"
 
     else:
-        slashPos = check_for_char(tempFileName[:-1], "/")
+        slashPos = check_for_char(tempFileName[:-1], "\\") #Weird double slash is just a representation
         if slashPos != False:
-            tempFileName = tempFileName[:slashPos]
+            tempFileName = tempFileName[:slashPos] + "\\"
+            if check_for_char(tempFileName[:-1], "\\") == False:
+                tempFileName = "C:\\" #Making sure slashes get added properly
         else:
-            tempFileName = "C:/"
-        print(tempFileName, "nFN")
+            tempFileName = "C:\\"
 
+    pathLabel["text"] = tempFileName #Setting new file path on folder window
+            
     newFileName = tempFileName #Actually setting the path
 
     listbox.delete(0, listbox.size()) #Clearing all elements in the listbox
@@ -918,17 +929,21 @@ def folder_selector(textWidgets=[""], labels=[""], event=None):
     
     main = Tk()
     main.title("Select folder...")
-    main.geometry("300x325")
+    main.geometry("300x340")
     main.iconbitmap(goodIcon)
     main["bg"] = colorList[2]
 
     possiblePaths = [] #Holds the current possible paths to travel to
-    newFileName = str("C:/") #Holds the current path
+    newFileName = os.getcwd()+"\\" #Holds the current path
 
     mainMessage = Label(main,
                         text="Click on a folder below, then \"Select File\" to travel to it. \nClick \"Ok\" when you've reached the desired folder.")
     mainMessage.config(bg=colorList[2], fg=colorList[1])
     mainMessage.pack()
+
+    newPathLabel = Label(main, text=newFileName)
+    newPathLabel.config(bg=colorList[2], fg=colorList[1])
+    newPathLabel.pack()
 
     pathFrame = Frame(main, width=275, height=250) #Where the folders/files will go
     pathFrame["bg"] = colorList[2]
@@ -949,8 +964,8 @@ def folder_selector(textWidgets=[""], labels=[""], event=None):
     backButton.config(bg=colorList[2], fg=colorList[1], activebackground=colorList[0], activeforeground=colorList[1])
     
     okButton.bind("<Button-1>", lambda _: kill_window(main, ["newFileName", newFileName, labels], textWidgets)) #Oh boy
-    selectButton.bind("<Button-1>", lambda _: select_listbox_item(pathListbox, possiblePaths, newFileName))
-    backButton.bind("<Button-1>", lambda _: select_listbox_item(pathListbox, possiblePaths, newFileName, -2))
+    selectButton.bind("<Button-1>", lambda _: select_listbox_item(pathListbox, possiblePaths, newFileName, pathLabel=newPathLabel))
+    backButton.bind("<Button-1>", lambda _: select_listbox_item(pathListbox, possiblePaths, newFileName, -2, newPathLabel))
     
     okButton.pack(side=LEFT, expand=TRUE)
     backButton.pack(side=RIGHT, expand=TRUE)

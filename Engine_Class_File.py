@@ -25,6 +25,7 @@ https://stackoverflow.com/questions/27123676 (Q: Ramon Geessink, A: guest)
 
 Misc:
 https://stackoverflow.com/questions/6591931/getting-file-size-in-python (Q: 6966488-1, A: Artsiom Rudzenka)
+https://stackoverflow.com/questions/24085680/why-do-backslashes-appear-twice (QA)
 '''
 
 class Engine_Class:
@@ -493,19 +494,13 @@ def smoother_corrupt_engine(cV, blockSpace, baseFile, corruptedFile, endValue):
     '''Does smoothing stuff'''
     
     #cV[0][0] = blockSize
-    if cV[0][0] <= 0:
-        bytes1 = baseFile.read(1)
-    else:
-        bytes1 = baseFile.read(cV[0][0])
+    bytes1 = baseFile.read(cV[0][0])
     currentByteList1 = list(bytes1)
     
     #cV[0][2] = blockGap
     bufferList = baseFile.read(abs(cV[0][2]))
-
-    if cV[0][0] <= 0:
-        bytes2 = baseFile.read(1)
-    else:
-        bytes2 = baseFile.read(cV[0][0])
+    
+    bytes2 = baseFile.read(cV[0][0])
     currentByteList2 = list(bytes2)
 
     if cV[2][0] == 0: #Normal
@@ -516,7 +511,7 @@ def smoother_corrupt_engine(cV, blockSpace, baseFile, corruptedFile, endValue):
             theSum = 0
             
         theSum = int(theSum) #Making the average a nice number
-        newByteList = [(theSum).to_bytes(1, byteorder="big") for x in range(0, cV[0][0])]
+        newByteList = [(theSum).to_bytes(1, byteorder="big") for x in range(0, len(currentByteList1))]
 
     else: #Termwise
         lenList2 = len(currentByteList2)
@@ -528,13 +523,8 @@ def smoother_corrupt_engine(cV, blockSpace, baseFile, corruptedFile, endValue):
                 newByteList.append(currentByteList1[x].to_bytes(1, byteorder="big"))
 
     if cV[0][2] < 0: #Negative
-        if len(bytes1) != len(bytes2): #Preventing the file's size from changing
-            for x in range(0, len(bytes2)):
-                corruptedFile.write(newByteList[x]) #Write corrupted bytes
-            corruptedFile.write(bytes1[len(bytes2):]) #Write corrupted bytes
-        else:
-            for x in range(0, cV[0][0]):
-                corruptedFile.write(newByteList[x]) #Write corrupted bytes
+        for x in range(0, len(bytes1)):
+            corruptedFile.write(newByteList[x]) #Write corrupted bytes
 
         corruptedFile.write(bufferList)
         corruptedFile.write(bytes2)
@@ -542,13 +532,8 @@ def smoother_corrupt_engine(cV, blockSpace, baseFile, corruptedFile, endValue):
     else: #Positive
         corruptedFile.write(bytes1) #Write corrupted bytes
         corruptedFile.write(bufferList)
-
-        if len(bytes1) != len(bytes2): #Preventing the file's size from changing
-            for x in range(0, len(bytes2)):
-                corruptedFile.write(newByteList[x])
-        else:
-            for x in range(0, cV[0][0]):
-                corruptedFile.write(newByteList[x])
+        for x in range(0, len(bytes2)):
+            corruptedFile.write(newByteList[x])
 
     copy_file_contents(baseFile, corruptedFile, blockSpace)
 
@@ -565,7 +550,7 @@ def blender_corrupt_engine(cV, blockSpace, baseFile, corruptedFile, xEndValue):
     if newBytes != "": #If we have data to write
         if len(newBytes) < cV[0][0]: #We need to add padding to keep file sizes the same
             corruptedFile.write(newBytes)
-            baseFile.seek(len(newBytes)) #Making sure our files are synced up
+            baseFile.seek(baseFile.tell()+len(newBytes)) #Making sure our files are synced up
             padding = baseFile.read(cV[0][0]-len(newBytes))
             corruptedFile.write(padding)
         else:
