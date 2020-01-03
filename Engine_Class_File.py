@@ -387,7 +387,7 @@ def shorten_text(text, length, shorten="Front"):
 
 
 def check_for_char(text, char="."):
-    '''Checks to see if there's a period in the given text'''
+    '''Checks to see if there's a character in the given text'''
     isChar = False
     position = 0
     for x in range(len(text)-1, -1, -1):
@@ -396,7 +396,9 @@ def check_for_char(text, char="."):
             position = x
             break
 
-    if isChar:
+    if isChar and char == "\n" and position == 0: #This is really dumb
+        return -1
+    elif isChar:
         return position
     else:
         return False

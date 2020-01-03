@@ -1,0 +1,9 @@
+Fixed bug where exponential values couldn't be decimals
+Fixed bug where exponential decimals in "Corrupt&Repeat" wouldn't work
+Fixed an oversight where "Corrupt&Repeat" would bombard you with errors if you made one mistake.
+Removed extra label on file select window (unneccesary, according to bugtesters)
+One can now press enter on the file select screen and save preset screen
+Sorry Telic, I'm not changing the slashes that face the other way :)
+Simplified the code for the info window
+Added Rare as a bugtester
+Added option to create a newFolder for storing "Corrupt&Repeat" results

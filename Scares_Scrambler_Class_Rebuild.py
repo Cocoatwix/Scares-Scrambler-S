@@ -15,8 +15,8 @@ from Theme_Class_File import *
 '''Hello, anyone reading this! Don't mind the disgusting code in some places; I'm not that good at coding, so don't expect it to work perfectly
 and/or look pretty! Anyways, hopefully you'll find some enjoyment messing around with this corrupter. Have fun!'''
 
-buildNumber = "17"
-versionNumber = "v1.104"
+buildNumber = "18"
+versionNumber = "v1.105"
 goodIcon = "Assets/favi16.ico"
 
 '''for x in range(0, len(__file__)): #Getting the folder path, so that pictures work properly on cmd
@@ -54,10 +54,13 @@ hexadecimalMode = False
 
 fileName = ""
 newFileName = ""
+oldFileName = ""
 newPresetName = ""
 
 cnameLabel = ""
-
+stopCorrupt = False #Variable to stop corrupting if needed
+newFolder = False #Says whether a new folder is to be created for "Corrupt&Repeat"
+nowCorrupting = False #Tells whether we're corrupting
 
 
 def switch_algorithm(event=None):
@@ -85,6 +88,15 @@ def auto_end_switch(event=None):
         endValueEntry.insert(0, size)
 
 
+def toggle_newFolder(event=None):
+    '''Toggles the value for newFolder'''
+    global newFolder
+    if newFolder:
+        newFolder = False
+    else:
+        newFolder = True
+
+
 def get_value(entry, isInt=True):
     '''Gets the value from an entry, and converts to decimal if necessary'''
     if entry.get() != "": #Preventing erros while switching between hex and dec
@@ -96,7 +108,10 @@ def get_value(entry, isInt=True):
 
         else:
             if isInt:
-                return int(entry.get())
+                try:
+                    return int(entry.get())
+                except:
+                    return float(entry.get()) #Fixing problems with exponential
             else:
                 return float(entry.get())
 
@@ -180,14 +195,15 @@ def enter_file(event=None):
     '''Chooses the files to use during corrupting'''
     userFileWindow = Tk()
     userFileWindow.title("Enter filenames...")
-    userFileWindow.geometry("450x200+250+250")
+    userFileWindow.geometry("450x180+250+250")
     userFileWindow.iconbitmap(goodIcon)
     userFileWindow.resizable(width=False, height=False)
 
     mainFrame = Frame(userFileWindow)
     applyFrame = Frame(userFileWindow)
 
-    instLabel = Label(mainFrame, text="Select the file you wish to corrupt, and enter the name of the new file:")
+    instLabel = Label(mainFrame, text="Select the file you wish to corrupt, and enter the name of the new file\n"
+                      "(You may need to use the arrow keys to scroll the textbox):")
     cfileLabel = Label(mainFrame, text="File To Corrupt:")
     
     if fileName == "":
@@ -197,14 +213,16 @@ def enter_file(event=None):
         cnameLabel = Label(mainFrame, text=t)
 
     userFileButton = Button(mainFrame, text="Select File")
-    nfileLabel = Label(mainFrame, text="New File Path:")
     nfileLabel2 = Label(mainFrame, text="New File Name:")
     newFileButton = Button(mainFrame, text="Select Folder")
-    
-    t = shorten_text(newFileName, 25, "Front")
-    newFilePath = Label(mainFrame, text=t)
 
     newFileText = Text(mainFrame)
+    if newFileName == "":
+        newFileText.insert(END, "Enter new file name...")
+        newFileText.bind("<Button-1>", lambda x: clear_textWidget(x, newFileText, "Enter new file name..."))
+    else:
+        newFileText.insert(END, newFileName)
+        
     applyButton = Button(applyFrame, text=" Apply ")
 
     userFileWindow.config(bg=colorList[2])
@@ -214,25 +232,16 @@ def enter_file(event=None):
     cfileLabel.config(bg=colorList[2], fg=colorList[1])
     cnameLabel.config(bg=colorList[2], fg=colorList[1])
     userFileButton.config(bg=colorList[2], fg=colorList[1], activebackground=colorList[2], activeforeground=colorList[1])
-    nfileLabel.config(bg=colorList[2], fg=colorList[1])
     nfileLabel2.config(bg=colorList[2], fg=colorList[1])
-    newFilePath.config(bg=colorList[2], fg=colorList[1])
     newFileText.config(bg=colorList[0], fg=colorList[1], insertbackground=colorList[1], selectbackground=colorList[5])
     newFileButton.config(bg=colorList[2], fg=colorList[1], activebackground=colorList[2], activeforeground=colorList[1])
     applyButton.config(bg=colorList[2], fg=colorList[1], activebackground=colorList[2], activeforeground=colorList[1])
 
     userFileButton.bind("<Button-1>", select_file)
-    newFileButton.bind("<Button-1>", lambda _: folder_selector([newFileText], [newFilePath]))
+    newFileButton.bind("<Button-1>", lambda _: folder_selector([newFileText]))
     applyButton.bind("<Button-1>", lambda _: get_file_name(newFileText))
 
     newFileText.config(width=25, height=1)
-
-    if newFileName == "":
-        newFileText.insert(END, "Enter new file name...")
-        newFileText.bind("<Button-1>", lambda x: clear_textWidget(x, newFileText, "Enter new file name..."))
-    else:
-        newFileText.insert(END, newFileName)
-
 
     mainFrame.pack()
     applyFrame.pack()
@@ -241,15 +250,14 @@ def enter_file(event=None):
     cfileLabel.grid(row=2, column=1, columnspan=2, padx=0, pady=5)
     cnameLabel.grid(row=2, column=3, columnspan=5, padx=10, pady=5)
     userFileButton.grid(row=2, column=8, padx=20, pady=5)
-    
-    nfileLabel.grid(row=3, column=1, columnspan=2, padx=0, pady=5)
-    newFilePath.grid(row=3, column=3, columnspan=5, padx=5, pady=5)
+
     newFileButton.grid(row=3, column=8, padx=5, pady=5)
 
-    nfileLabel2.grid(row=4, column=1, columnspan=2, padx=5, pady=5)
-    newFileText.grid(row=4, column=3, columnspan=5, padx=28, pady=5)
-    applyButton.grid(row=5, column=1, columnspan=1, padx=10, pady=15)
+    nfileLabel2.grid(row=3, column=1, columnspan=2, padx=5, pady=5)
+    newFileText.grid(row=3, column=3, columnspan=5, padx=28, pady=5)
+    applyButton.grid(row=4, column=1, columnspan=1, padx=10, pady=15)
 
+    userFileWindow.bind("<Return>", lambda _: get_file_name(newFileText))
     userFileWindow.mainloop()
 
 
@@ -267,6 +275,7 @@ def get_file_name(text, event=None):
     global userFileLabel
     #global newFileText
     global newFileName
+    global oldFileName
     global fileName
     '''Gets the file name that the user entered'''
     newFileName = text.get(1.0, END)[:-1]
@@ -277,11 +286,19 @@ def get_file_name(text, event=None):
         newFileName += fileName[pp:]
         #print(newFileName)
 
+    p = check_for_char(newFileName, "\n")
+    if p != False:
+        if p == -1:
+            newFileName = newFileName[1:] #Removing any newlines from pressing enter
+        else:
+            newFileName = newFileName[:p] + newFileName[p+1:] #Removing any newlines from pressing enter
+
     if fileName == "":
         userFileLabel.config(text="No file loaded. Press Alt+F to load one!")
     else:
         hide_userFileLabel()
-        
+
+    oldFileName = newFileName #Saving oldFileName so that it won't get lost
     userFileWindow.destroy()
 
 
@@ -292,30 +309,22 @@ def about_program_window(event=None):
     aboutWindow.title("About Scares Scrambler Build "+buildNumber+" "+"("+versionNumber+")")
     aboutWindow.iconbitmap(goodIcon)
 
-    infoLabel = Label(aboutWindow, text="Program created by your man, Scares. Bugtested by Telic, Ellex, Tyler, Dubby, and Scott.")
-    infoLabel2 = Label(aboutWindow, text="This is an open-source project, so feel free to mess around in the code and stuff.")
-    infoLabel3 = Label(aboutWindow, text="If you want to release your own modified version of this project, just credit me! :3")
-    infoLabel4 = Label(aboutWindow, text="I'd also like to extend a huge thank you to anyone who bothered to try this thing!")
-    infoLabel5 = Label(aboutWindow, text="I know this isn't the best corrupter out there, but I tried to make it as special as I could.")
-    infoLabel7 = Label(aboutWindow, text="Thank you for being a part of this project. Here's to a third year of crappy software!")
+    infoLabel = Label(aboutWindow, text="Program created by your man, Scares. Bugtested by Telic, Ellex, Tyler, Dubby, Scott, and Rare.\n"
+                      "This is an open-source project, so feel free to mess around in the code and stuff.\n"
+                      "If you want to release your own modified version of this project, just credit me! :3\n"
+                      "I'd also like to extend a huge thank you to anyone who bothered to try this thing!\n"
+                      "It isn't the best piece of software out there, but I think it's pretty ok.")
+    infoLabel2 = Label(aboutWindow, text="Thank you for being a part of this project. Here's to a third year of crappy software!")
 
     aboutWindow["bg"] = colorList[2]
     goodLogo = PhotoImage(master=aboutWindow, file=colorList[4])
     infoLabel.config(bg=colorList[2], fg=colorList[1])
-    infoLabel2.config(bg=colorList[2], fg=colorList[1])
-    infoLabel3.config(bg=colorList[2], fg=colorList[1])
-    infoLabel4.config(bg=colorList[2], fg=colorList[1])
-    infoLabel5.config(bg=colorList[2], fg=colorList[1])
     infoLabel6 = Label(aboutWindow, image=goodLogo)
-    infoLabel7.config(bg=colorList[2], fg=colorList[1])
+    infoLabel2.config(bg=colorList[2], fg=colorList[1])
 
     infoLabel.pack()
-    infoLabel2.pack()
-    infoLabel3.pack()
-    infoLabel4.pack()
-    infoLabel5.pack()
     infoLabel6.pack()
-    infoLabel7.pack()
+    infoLabel2.pack()
 
     aboutWindow.mainloop()
 
@@ -323,6 +332,7 @@ def about_program_window(event=None):
 def corrupt_file(event=None, determinedVariables=[]):
     global newFileName
     global userFileLabel
+    global stopCorrupt
     '''Corrupts the chosen file'''
 
     tempIndex = 0 #Holds the index for specific variables
@@ -340,7 +350,7 @@ def corrupt_file(event=None, determinedVariables=[]):
                 blockSize = 1
 
             tempIndex = find_engine_index(theEngine, "Block Space", "Alts") #Checking alts in case the label is different
-            blockSpace = get_value(theEngine.entries[tempIndex][1])
+            #blockSpace = get_value(theEngine.entries[tempIndex][1])
 
             blockSpaceState = theEngine.radioButtonVariables[tempIndex].get()
             if blockSpaceState == 2: #Exponential
@@ -366,7 +376,7 @@ def corrupt_file(event=None, determinedVariables=[]):
             startValue = determinedVariables[0][1]
             endValue = determinedVariables[1][1]
             blockSpaceState = determinedVariables[-2][1]
-            determinedVariables = determinedVariables[2:-2]
+            determinedVariables = determinedVariables[2:-2] #Dumb formatting
 
             for x in determinedVariables:
                 if x[0] == "Block Size":
@@ -434,6 +444,8 @@ def corrupt_file(event=None, determinedVariables=[]):
             strCorruptRange = str(corruptRange)
             userFileLabel["text"] = "0/"+strCorruptRange+" (0%) corrupted"
 
+            print(blockSpace)
+
             while True: #Main corruption loop
 
                 if blockSpaceState == 2: #Exponential
@@ -489,16 +501,22 @@ def corrupt_file(event=None, determinedVariables=[]):
         corruptedFile.close()
         if theEngine.name == "Blender Algorithm":
             corruptingVariables[3].close()
+        stopCorrupting = False
             
     except ValueError:
         messagebox.showwarning("Woah there partner!", "The values you entered were not valid. Make sure that all the values were entered correctly. "
                                "Some values can't be decimals, so uh... check that as well.")
         hide_userFileLabel() #Fixing any stuck progress bars
-        baseFile.close()
-        corruptedFile.close()
+        try:
+            baseFile.close()
+            corruptedFile.close()
+        except UnboundLocalError: #File was never opened
+            pass
         root.update() #Updates userFileLabel with progress bar
         if theEngine.name == "Blender Algorithm":
             corruptingVariables[3].close()
+            
+        stopCorrupt = True
     except IndexError:
         if baseFile.read() == b"": #Checking to see if endValue was too big
             hide_userFileLabel() #Changing from progress bar to file name, if needed
@@ -514,18 +532,26 @@ def corrupt_file(event=None, determinedVariables=[]):
             if theEngine.name == "Blender Algorithm":
                 corruptingVariables[3].close()
         root.update() #Updates userFileLabel with progress bar
+
+        stopCorrupt = True
     except TypeError:
         messagebox.showwarning("Woah there partner!", "Make sure to fill in the required values!")
         hide_userFileLabel() #Fixing any stuck progress bars
-        baseFile.close()
-        corruptedFile.close()
+        try:
+            baseFile.close()
+            corruptedFile.close()
+        except UnboundLocalError: #File was never opened
+            pass
         if theEngine.name == "Blender Algorithm":
             corruptingVariables[3].close()
         root.update() #Updates userFileLabel with progress bar'''
+        stopCorrupt = True
 
 
 def corrupt_repeat_window(event=None):
     '''Function to manage "Corrupt and Repeat"'''
+    #global newFolder
+    global oldFileName
 
     repeatWindow = Tk()
     repeatWindow.title("Corrupt and Repeat")
@@ -554,6 +580,8 @@ def corrupt_repeat_window(event=None):
         instructions = Label(repeatWindow, text='Insert the amount you\'d like the settings to be\n'
                          'incremented each time, then press "Corrupt".')
 
+    newFolderCheck = Checkbutton(repeatWindow, text="Store files in new folder", command=toggle_newFolder) #Checkbox to tell whether user wants a separate folder
+
     corruptButton.bind("<Button-1>", lambda _: corrupt_repeat(entries))
 
     repeatWindow["bg"] = colorList[2]
@@ -563,6 +591,8 @@ def corrupt_repeat_window(event=None):
         x[0].config(bg=colorList[2], fg=colorList[1])
         x[1].config(bg=colorList[0], fg=colorList[1], insertbackground=colorList[1], selectbackground=colorList[5])
     corruptButton.config(bg=colorList[2], fg=colorList[1], activebackground=colorList[2], activeforeground=colorList[1])
+    newFolderCheck.config(bg=colorList[2], fg=colorList[1], selectcolor=colorList[0], activebackground=colorList[2],
+                          activeforeground=colorList[1])
     
     instructions.pack()
     incFrame.pack()
@@ -571,7 +601,8 @@ def corrupt_repeat_window(event=None):
         entries[x][1].grid(row=x+1, column=1, columnspan=3, padx=10, sticky=W)
 
     corruptButton.pack(side="bottom", pady=5)
-    
+    newFolderCheck.pack(side="bottom", pady=5)
+
     repeatWindow.mainloop()
 
 
@@ -579,17 +610,43 @@ def corrupt_repeat(entries, event=None):
     '''The function that manages the corrupt and repeat stuff'''
     '''The random minuses in the range functions are to prevent errors with special corrupting values'''
     global newFileName
+    global oldFileName
+    global stopCorrupt
+
+    if newFolder and "newFolder" not in newFileName: #If we're making a new folder
+        p = check_for_char(newFileName, "\\")
+        q = check_for_char(__file__, "\\")
+        print(__file__[:q], "wow")
+                
+        if p != False: #If the newFileName is a full path
+            if not os.path.exists(newFileName[:p]+"\\newFolder"):
+                os.mkdir(newFileName[:p]+"\\newFolder") #Make new directory if needed
+                
+            newFileName = newFileName[:p] + "\\newFolder" + newFileName[p:]
+        else:
+            if not os.path.exists(__file__[:q]+"\\newFolder"):
+                os.mkdir(__file__[:q]+"\\newFolder") #Make new directory if needed
+                
+            newFileName = __file__[:q] + "\\newFolder\\" + newFileName #Making sure the new folder gets added to path correctly
+        print(p, "p")
+    elif not newFolder:
+        newFileName = oldFileName
+
+    print(newFileName)
 
     variables = []
     ogFileName = newFileName
     extraOffset = 0 #In case extra things are added to the variables; prevents incrementing errors
     expo = algorithms[currentEngine.get()-1].radioButtonVariables[find_engine_index(
         algorithms[currentEngine.get()-1], "Block Space", "Alts")].get()
+
+    blockSpaceAlts = algorithms[currentEngine.get()-1].entryAlts[find_engine_index(
+        algorithms[currentEngine.get()-1], "Block Space", "Alts")]
     #Checking to see if exponential is on
     for x in entries:
         try:
             if x[1].get() != "": #If there's actual data to collect
-                if x[0] == "Block Space Inc" and expo == 2:
+                if x[0]["text"][:-5] in blockSpaceAlts and expo == 2:
                     variables.append([x[0]["text"][:-5], get_value(x[1], isInt=False)])
                 else:
                     variables.append([x[0]["text"][:-5], get_value(x[1], isInt=True)])
@@ -616,8 +673,11 @@ def corrupt_repeat(entries, event=None):
         for y in range(0, len(variables)-2-extraOffset):
             currentVariables[y][1] += variables[y][1] #This is what does the incrementing
         newFileName = ogFileName[:dotPos] + "_" + str(x) + ogFileName[dotPos:]
+        if stopCorrupt: #If we need to stop corrupting
+            break
 
     newFileName = ogFileName #Returning the fileName to normal
+    stopCorrupt = False
 
 
 def save_presets_window(event=None):
@@ -647,6 +707,7 @@ def save_presets_window(event=None):
     newPresetEntry.pack(pady=5)
     newPresetButton.pack()
 
+    newPresetWindow.bind("<Return>", lambda _: save_presets(newPresetEntry))
     newPresetWindow.mainloop()
 
 
@@ -705,6 +766,7 @@ def save_presets(newPresetEntry, event=None):
 def load_presets(event=None, coolName=""):
     global fileName
     global newFileName
+    global oldFileName
     global startValueEntry
     global endValueEntry
     global incValueEntry
@@ -732,6 +794,7 @@ def load_presets(event=None, coolName=""):
         if tag == "~~preset~~\n": #The preset used in Build 13 and below
             fileName = presetFile.readline()[:-1]
             newFileName = presetFile.readline()[:-1]
+            oldFileName = newFileName
             startValueEntry.delete(0, END)
             startValueEntry.insert(0, presetFile.readline()[:-1])
             endValueEntry.delete(0, END)
@@ -790,6 +853,7 @@ def load_presets(event=None, coolName=""):
         elif tag == "~~preset14~~\n" or tag == "~~preset16~~\n": #Preset for Build 14
             fileName = presetFile.readline()[:-1]
             newFileName = presetFile.readline()[:-1]
+            oldFileName = newFileName
             if tag == "~~preset16~~\n":
                 extraFile = presetFile.readline()[:-1] #Extra file name
             startValueEntry.delete(0, END)
@@ -903,9 +967,9 @@ def select_listbox_item(listbox, pathList, tempFileName, curselection=":)", path
         if slashPos != False:
             tempFileName = tempFileName[:slashPos] + "\\"
             if check_for_char(tempFileName[:-1], "\\") == False:
-                tempFileName = "C:\\" #Making sure slashes get added properly
+                tempFileName = "C:/" #Making sure slashes get added properly
         else:
-            tempFileName = "C:\\"
+            tempFileName = "C:/"
 
     pathLabel["text"] = tempFileName #Setting new file path on folder window
             
@@ -955,7 +1019,7 @@ def folder_selector(textWidgets=[""], labels=[""], event=None):
     pathFrameScrollbar.config(command=pathListbox.yview, bg=colorList[2], activebackground=colorList[0],
                               highlightcolor=colorList[1], highlightbackground=colorList[2])
     pathListbox.pack()
-    
+
     okButton = Button(main, text="Ok")
     selectButton = Button(main, text="Select Folder")
     backButton = Button(main, text="Go Up")
@@ -984,11 +1048,12 @@ def kill_window(window, variables=["Name", "Value", ["Label"]], textWidgets=[":)
     global newFileName
     if variables[0] == "newFileName":
         newFileName = variables[1]
-        for x in variables[2]: #Labels
-            if len(newFileName) > 25:
-                x["text"] = shorten_text(newFileName, 25, "Front") #Urg, this sucks
-            else:
-                x["text"] = newFileName
+        if variables[2] != [""]:
+            for x in variables[2]: #Labels
+                if len(newFileName) > 25:
+                    x["text"] = shorten_text(newFileName, 25, "Front") #Urg, this sucks
+                else:
+                    x["text"] = newFileName
 
     if textWidgets != [":)"]: #Adding new file path to textbox in select file window
         for x in textWidgets:
