@@ -15,15 +15,12 @@ from Theme_Class_File import *
 '''Hello, anyone reading this! Don't mind the disgusting code in some places; I'm not that good at coding, so don't expect it to work perfectly
 and/or look pretty! Anyways, hopefully you'll find some enjoyment messing around with this corrupter. Have fun!'''
 
-buildNumber = "19"
-versionNumber = "v1.2"
+buildNumber = "20"
+versionNumber = "v1.21"
 goodIcon = "Assets/favi16.ico"
 
-'''for x in range(0, len(__file__)): #Getting the folder path, so that pictures work properly on cmd
-    #print(__file__[-x])
-    if __file__[-x] == r"\\":
-        folderPath = __file__[:-x] + r"\\"
-        break'''
+#os.getcwd() to get working directory
+#Thank you Russel Dias from https://stackoverflow.com/questions/5137497
 
 
 root = Tk()
@@ -582,8 +579,10 @@ def corrupt_file(event=None, determinedVariables=[]):
 
 def corrupt_repeat_window(event=None):
     '''Function to manage "Corrupt and Repeat"'''
-    #global newFolder
+    global newFolder
     global oldFileName
+
+    newFolder = False
 
     repeatWindow = Tk()
     if themeVar.get() == 3: #Dubby theme
@@ -616,7 +615,8 @@ def corrupt_repeat_window(event=None):
         instructions = Label(repeatWindow, text='Insert the amount you\'d like the settings to be\n'
                          'incremented each time, then press "Corrupt".')
 
-    newFolderCheck = Checkbutton(repeatWindow, text="Store files in new folder", command=toggle_newFolder) #Checkbox to tell whether user wants a separate folder
+    newFolderCheck = Checkbutton(repeatWindow, text="Store files in new folder", command=toggle_newFolder)
+    #Checkbox to tell whether user wants a separate folder
 
     corruptButton.bind("<Button-1>", lambda _: corrupt_repeat(entries))
 
@@ -649,9 +649,8 @@ def corrupt_repeat(entries, event=None):
     global oldFileName
     global stopCorrupt
 
-    if newFolder and "newFolder" not in newFileName: #If we're making a new folder
+    if newFolder and ("newFolder" not in newFileName): #If we're making a new folder
         p = check_for_char(newFileName, "\\")
-        q = check_for_char(__file__, "\\")
         #print(__file__[:q], "wow")
                 
         if p != False: #If the newFileName is a full path
@@ -660,10 +659,10 @@ def corrupt_repeat(entries, event=None):
                 
             newFileName = newFileName[:p] + "\\newFolder" + newFileName[p:]
         else:
-            if not os.path.exists(__file__[:q]+"\\newFolder"):
-                os.mkdir(__file__[:q]+"\\newFolder") #Make new directory if needed
+            if not os.path.exists(os.getcwd()+"\\newFolder"):
+                os.mkdir(os.getcwd()+"\\newFolder") #Make new directory if needed
                 
-            newFileName = __file__[:q] + "\\newFolder\\" + newFileName #Making sure the new folder gets added to path correctly
+            newFileName = os.getcwd() + "\\newFolder\\" + newFileName #Making sure the new folder gets added to path correctly
     elif not newFolder:
         newFileName = oldFileName
 

@@ -1,0 +1,12 @@
+The 1.2 update of the Scares Scrambler has been the longest update to make so far, mostly because of some huge behind-the-scenes code overhauls. Here's a list of new features that may interest you:
+	-Corrupt & Repeat: Generate multiple corrupted files at once!
+	-New Dubby Theme: Don't ask.
+	-New Folder Selector: For getting exact paths for the corrupted file.
+	-Two New Algorithms: Smoother and Blender; they're pretty fun.
+	-UI Update: Just some small quality-of-life improvements.
+	-Corruption Progress Bar: Blink and you'll miss it.
+	-Mixer Algorithm: You'll never know.
+	-Bugfixes: Because hey, why not?
+	-Probably Other Stuff I'm Forgetting
+
+Hope you have fun with all the new stuff!
