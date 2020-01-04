@@ -1,0 +1,8 @@
+**.exe
+**.spec
+dist
+dist/**
+__pycache__/**
+__pycache__
+build
+build/**

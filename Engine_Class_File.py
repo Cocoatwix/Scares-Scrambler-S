@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 #Scares Scrambler Engine Class File
 import tkinter as Tkinter

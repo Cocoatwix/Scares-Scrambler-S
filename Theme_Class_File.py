@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 #Scares Scramber Theme Class File
 import tkinter as Tkinter

@@ -1,5 +1,4 @@
-
-#!py -3.4
+#!/usr/bin/env python3
 
 import os
 import random
@@ -15,9 +14,9 @@ from Theme_Class_File import *
 '''Hello, anyone reading this! Don't mind the disgusting code in some places; I'm not that good at coding, so don't expect it to work perfectly
 and/or look pretty! Anyways, hopefully you'll find some enjoyment messing around with this corrupter. Have fun!'''
 
-buildNumber = "20"
-versionNumber = "v1.21"
-goodIcon = "Assets/favi16.ico"
+buildNumber = "9+10"
+versionNumber = "v1.2121"
+goodIcon = "Assets/favi.ico"
 
 #os.getcwd() to get working directory
 #Thank you Russel Dias from https://stackoverflow.com/questions/5137497
