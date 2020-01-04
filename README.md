@@ -13,9 +13,14 @@ Currently Planned Features: A bunch, but Scare'm not writing them right now.
 
 - Python3
 - Tkinter
-- Pyinstaller (for build)
+- Pyinstaller (optional, for building)
 
-(`pip3 install tkinter pyinstaller`)
+`pip3 install tkinter pyinstaller`
+
+If you're running Python 3.8, as of now you need to install the
+*development* version of Pyinstaller for the build to work at all:
+
+`pip3 install tkinter https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz`
 
 # How run without build?
 
