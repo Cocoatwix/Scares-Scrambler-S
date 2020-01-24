@@ -8,14 +8,14 @@ from tkinter import *
 from tkinter import (Tk, messagebox, ttk)
 from tkinter.filedialog import askopenfilename
 
-from Engine_Class_File import * #Import all the important classes I made haha
-from Theme_Class_File import *
+from Engine import * #Import all the important classes I made haha
+from Themes import *
 
 '''Hello, anyone reading this! Don't mind the disgusting code in some places; I'm not that good at coding, so don't expect it to work perfectly
 and/or look pretty! Anyways, hopefully you'll find some enjoyment messing around with this corrupter. Have fun!'''
 
-buildNumber = "9+10"
-versionNumber = "v1.2121"
+buildNumber = "22"
+versionNumber = "v1.22"
 goodIcon = "Assets/favi.ico"
 
 #os.getcwd() to get working directory
