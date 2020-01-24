@@ -16,7 +16,7 @@ and/or look pretty! Anyways, hopefully you'll find some enjoyment messing around
 
 buildNumber = "22"
 versionNumber = "v1.22"
-goodIcon = "Assets/favi.ico"
+goodIcon = "Assets/favi.ico" if (os.name == 'nt') else "@Assets/favi.xbm"
 
 #os.getcwd() to get working directory
 #Thank you Russel Dias from https://stackoverflow.com/questions/5137497
@@ -1153,8 +1153,12 @@ aboutMenu.add_command(label="Contributors", command=credits_window)
 
 #----------------------------------------------------------------------------------
 
-lightTheme = Theme_Class("Light", ["SystemWindow", "SystemButtonText", "SystemButtonFace",
-                                   PhotoImage(file="Assets/banner.png"), "Assets/logo.png", "SystemHighlight"])
+if (os.name == 'nt'):
+    lightTheme = Theme_Class("Light", ["SystemWindow", "SystemButtonText", "SystemButtonFace",
+                                        PhotoImage(file="Assets/banner.png"), "Assets/logo.png", "SystemHighlight"])
+else: # ^ "SystemWindow" identifiers and stuff don't exist on non-windows platforms
+    lightTheme = Theme_Class("Light", ["#d4d0c8", "#000000", "#d4d0c8",
+                                        PhotoImage(file="Assets/banner.png"), "Assets/logo.png", "#ffffff"])
 darkTheme = Theme_Class("Dark", ["#1c1c1c", "#c8c8c8", "#1c1c1c",
                                  PhotoImage(file="Assets/darkBanner.png"), "Assets/darkLogo.png", "#6600CC"])
 dubbyTheme = Theme_Class("Dubby", ["#004200", "#00ff00", "#006900",

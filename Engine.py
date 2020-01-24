@@ -7,6 +7,7 @@ from tkinter import (Tk, ttk)
 from tkinter.filedialog import askopenfilename
 
 import random
+import os
 #import copy 
 
 '''

@@ -1,5 +1,5 @@
 Release.zip: clean Scrambler.py Engine.py Themes.py Assets
-	pyinstaller Scrambler.py -w -F -i Assets/favi.ico
+	pyinstaller Scrambler.py -w -F -i Assets/favi.xbm
 	7z a Release.zip ./dist/* Assets
 
 clean:
