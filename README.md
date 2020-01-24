@@ -10,6 +10,12 @@ Current Beta Build: 22
 Currently Planned Features: A bunch, but Scare'm not writing them
 right now.
 
+# Ancient artifacts?
+
+Look at the [commits](https://github.com/Cocoatwix/Scares-Scrambler-Class-Rebuild/commits/master).
+
+Old testing versions (all previously private) and older releases were uploaded as commits by Scott, Scott.
+
 # What need?
 
 - [Python >=3.5][1]
