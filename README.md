@@ -7,6 +7,8 @@ Current Release Build: 20
 
 Current Beta Build: 22
 
+Romanian Translation (by TheTechnoGuy18): https://github.com/TheTechnoGuy18/ScaresScrambler_Custom
+
 Currently Planned Features: A bunch, but Scare'm not writing them
 right now.
 
