@@ -25,13 +25,18 @@ Old testing versions (all previously private) and older releases were uploaded a
 - [Pyinstaller][2] (optional, for building)
 - Some form of 7-zip (optional, for building)
 - GNU make (optional, for building on Linux)
+- [Pillow][3] (required on MacOS)
 
 [1]: https://www.python.org/
 [2]: https://www.pyinstaller.org/
+[3]: https://python-pillow.org/
 
 ```bash
 # Install Pyinstaller (not system dependent):
 pip3 install pyinstaller
+
+# Install Pillow (required to run on MacOS):
+pip3 install Pillow
 
 # Install p7zip (Arch/Manjaro Linux):
 sudo pacman -Sy p7zip

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import os
+import os, platform
 import random
 
 import tkinter as Tkinter
@@ -1153,16 +1153,31 @@ aboutMenu.add_command(label="Contributors", command=credits_window)
 
 #----------------------------------------------------------------------------------
 
+def loadImage(file):
+    """ Hacky fix for OS X - just an alias for PhotoImage() otherwise.
+    Use this instead of PhotoImage() for compatibility. """
+    if (platform.system() == 'Darwin'):
+        # OS X can't load .png files for some goddamn reason.
+        from PIL import ImageTk, Image
+        return ImageTk.PhotoImage(Image.open(file))
+    else:
+        return PhotoImage(file=file)
+
 if (os.name == 'nt'):
     lightTheme = Theme_Class("Light", ["SystemWindow", "SystemButtonText", "SystemButtonFace",
-                                        PhotoImage(file="Assets/banner.png"), "Assets/logo.png", "SystemHighlight"])
-else: # ^ "SystemWindow" identifiers and stuff don't exist on non-windows platforms
+                                        loadImage(file="Assets/banner.png"), "Assets/logo.png", "SystemHighlight"])
+    # ^ "SystemWindow", etc doesn't exist on Non-Windows
+else:
+    # Those colors replaced with the colors given by Windows 7's
+    # Classic Theme here. (Looks fugly, TODO: Find better workaround colors
+    # and use them regardless of platform)
     lightTheme = Theme_Class("Light", ["#d4d0c8", "#000000", "#d4d0c8",
-                                        PhotoImage(file="Assets/banner.png"), "Assets/logo.png", "#ffffff"])
+                                        loadImage(file="Assets/banner.png"), "Assets/logo.png", "#ffffff"])
+
 darkTheme = Theme_Class("Dark", ["#1c1c1c", "#c8c8c8", "#1c1c1c",
-                                 PhotoImage(file="Assets/darkBanner.png"), "Assets/darkLogo.png", "#6600CC"])
+                                 loadImage(file="Assets/darkBanner.png"), "Assets/darkLogo.png", "#6600CC"])
 dubbyTheme = Theme_Class("Dubby", ["#004200", "#00ff00", "#006900",
-                                   PhotoImage(file="Assets/dubbyBanner.png"), "Assets/dubbyLogo.png", "#00ee00"])
+                                   loadImage(file="Assets/dubbyBanner.png"), "Assets/dubbyLogo.png", "#00ee00"])
 
 themes = [lightTheme, darkTheme, dubbyTheme]
 
