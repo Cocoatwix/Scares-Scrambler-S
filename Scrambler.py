@@ -995,6 +995,11 @@ def theme_switch(event=None):
         corruptRepeatButton["text"] = "Corrupt and Repeat"
 
 
+    # remember last used theme
+    with open("Assets/selectedTheme.txt", "w") as text_file:
+        text_file.write(str(themeVar.get()))
+
+
 def select_listbox_item(listbox, pathList, tempFileName, curselection=":)", pathLabel=":)", event=None):
     '''Returns an item within a given listbox'''
     global newFileName
@@ -1208,7 +1213,7 @@ if (os.path.exists("Themes")):                  #themes must be put in the Theme
                 elif i == 3:
                     customtheme_bgcolor = line      #main background/button color
                 elif i == 4:
-                    customtheme_lightcolor = line   #brighter color
+                    customtheme_lightcolor = line   #dropdown menu highlight color
 
                 i = i+1
 
@@ -1384,5 +1389,15 @@ except FileNotFoundError:
                 load_presets(coolName=f)
     except FileNotFoundError:
         pass
+
+
+# load previously used theme if set
+if (os.path.exists("Assets/selectedTheme.txt")):
+    with open("Assets/selectedTheme.txt", "r") as text_file:
+        selectedThemeIndex = int(text_file.read())
+        if (selectedThemeIndex <= len(themes)):
+            themeVar.set(selectedThemeIndex)
+            theme_switch()
+
 
 root.mainloop()
