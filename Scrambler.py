@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import os, platform
+import os, platform, glob
 import random
 
 import tkinter as Tkinter
@@ -960,6 +960,7 @@ def theme_switch(event=None):
 
     colorList = themes[themeVar.get()-1].colorList #Changes the colors we're using
     bannerLabel["image"] = colorList[3] #Changes the banner
+    logoFilename = colorList[4];
 
     for x in range(0, len(algorithms)): #Prevents random buttons in other algorithms from changing color
         algorithms[x].recolor(colorList) #Recolors the elements of the corrupter
@@ -977,9 +978,18 @@ def theme_switch(event=None):
         else:
             x["bg"] = colorList[2]
 
-    if themeVar.get() == 3: #Dubby theme
+    if logoFilename.find("Dubby") != -1: #Dubby theme
         corruptButton["text"] = "Dubby"
         corruptRepeatButton["text"] = "Dubby and Repeat"
+
+    elif logoFilename.find("Dejavu") != -1: #Dejavu theme
+        corruptButton["text"] = "Blast"
+        corruptButton.config(fg='orangered')
+        corruptButton.config(bg='#23303e')
+        corruptRepeatButton["text"] = "Blast and Repeat"
+        corruptRepeatButton.config(fg='orangered')
+        corruptRepeatButton.config(bg='#23303e')
+
     else:
         corruptButton["text"] = "Corrupt"
         corruptRepeatButton["text"] = "Corrupt and Repeat"
@@ -1180,6 +1190,31 @@ dubbyTheme = Theme_Class("Dubby", ["#004200", "#00ff00", "#006900",
                                    loadImage(file="Assets/dubbyBanner.png"), "Assets/dubbyLogo.png", "#00ee00"])
 
 themes = [lightTheme, darkTheme, dubbyTheme]
+
+
+# loading custom themes from text files         [ircluzar 2021-01-10]
+if (os.path.exists("Themes")):                  #themes must be put in the Theme folder
+    for file in glob.glob("Themes/*.txt"):      #main file must be .txt and accompanied by 2 .png files (nameBanner.png nameLogo.png)
+        with open(file) as f:
+            lines = f.read().splitlines()
+            i = 0
+            for line in lines:
+                if i == 0:
+                    customtheme_name = line         #name is used to resolve png files
+                elif i == 1:
+                    customtheme_darkcolor = line    #color used for textbox background
+                elif i == 2:
+                    customtheme_textcolor = line    #main text color 
+                elif i == 3:
+                    customtheme_bgcolor = line      #main background/button color
+                elif i == 4:
+                    customtheme_lightcolor = line   #brighter color
+
+                i = i+1
+
+            customTheme = Theme_Class(customtheme_name, [customtheme_darkcolor, customtheme_textcolor, customtheme_bgcolor,
+            loadImage(file="Themes/" + customtheme_name + "Banner.png"), "Themes/" + customtheme_name + "Logo.png", customtheme_lightcolor])
+            themes.append(customTheme)
 
 for x in range(0, len(themes)): #Adds themes to menu
     themesMenu.add_radiobutton(label=themes[x].name, command=theme_switch, var=themeVar, value=x+1)
