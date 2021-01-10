@@ -978,11 +978,11 @@ def theme_switch(event=None):
         else:
             x["bg"] = colorList[2]
 
-    if logoFilename.find("Dubby") != -1: #Dubby theme
+    if logoFilename.upper().find("DUBBY") != -1: #Dubby theme
         corruptButton["text"] = "Dubby"
         corruptRepeatButton["text"] = "Dubby and Repeat"
 
-    elif logoFilename.find("Dejavu") != -1: #Dejavu theme
+    elif logoFilename.upper().find("DEJAVU") != -1: #Dejavu theme
         corruptButton["text"] = "Blast"
         corruptButton.config(fg='orangered')
         corruptButton.config(bg='#23303e')
