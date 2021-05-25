@@ -4,7 +4,6 @@ The place where all current/future Scares Scrambler stuff will
 happen (at least, in it's current form).
 
 Current Version: [v1.22](https://github.com/Cocoatwix/Scares-Scrambler-Class-Rebuild/releases/tag/v1.22)
-In development:  v1.3
 
 [Romanian Translation by TheTechnoGuy18](https://github.com/TheTechnoGuy18/ScaresScrambler_Custom)
 
