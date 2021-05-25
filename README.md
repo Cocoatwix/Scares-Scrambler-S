@@ -3,29 +3,32 @@
 The place where all current/future Scares Scrambler stuff will
 happen (at least, in it's current form).
 
-Current Release Build: 20
+Current Version: [v1.22](https://github.com/Cocoatwix/Scares-Scrambler-Class-Rebuild/releases/tag/v1.22)
+In development:  v1.3
 
-Current Beta Build: 22
-
-Romanian Translation (by TheTechnoGuy18): https://github.com/TheTechnoGuy18/ScaresScrambler_Custom
+[Romanian Translation by TheTechnoGuy18](https://github.com/TheTechnoGuy18/ScaresScrambler_Custom)
 
 Currently Planned Features: A bunch, but Scare'm not writing them
 right now.
 
+# Don't know what a "GitHub" is?
+
+Go to the [releases tab](https://github.com/Cocoatwix/Scares-Scrambler-Class-Rebuild/releases) to download Scares Scrambler for you're comptuer Now!
+
 # Ancient artifacts?
 
-Look at the [commits](https://github.com/Cocoatwix/Scares-Scrambler-Class-Rebuild/commits/master).
+Look at the very first of the [commits in this repo](https://github.com/Cocoatwix/Scares-Scrambler-Class-Rebuild/commits/master).
 
-Old testing versions (all previously private) and older releases were uploaded as commits by Scott, Scott.
+All previously private testing versions and older releases were uploaded as commits.
 
 # What need?
 
 - [Python >=3.5][1]
-- Tkinter (comes with all prebuilt versions of Python)
-- [Pyinstaller][2] (optional, for building)
-- Some form of 7-zip (optional, for building)
-- GNU make (optional, for building on Linux)
-- [Pillow][3] (required on MacOS)
+- Tkinter           (comes with all prebuilt versions of Python)
+- [Pyinstaller][2]  (optional, for building)
+- 7-Zip or p7zip    (optional, for building)
+- GNU make          (optional, for building on Linux)
+- [Pillow][3]       (required on MacOS)
 
 [1]: https://www.python.org/
 [2]: https://www.pyinstaller.org/
@@ -38,12 +41,12 @@ pip3 install pyinstaller
 # Install Pillow (required to run on MacOS):
 pip3 install Pillow
 
-# Install p7zip (Arch/Manjaro Linux):
-sudo pacman -Sy p7zip
-
-# Install p7zip (Debian/Ubuntu Linux):
+# Install p7zip (Ubuntu, Debian, Linux Mint):
 sudo apt-get update
 sudo apt-get install p7zip-full p7zip-rar
+
+# Install p7zip (Arch, Manjaro, Artix Linux):
+sudo pacman -Sy p7zip
 ```
 
 # How run without build?
