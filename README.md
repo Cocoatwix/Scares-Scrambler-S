@@ -85,3 +85,7 @@ Install [7-Zip][3] and add it to the `PATH`:
 
 Double-clicking `build.cmd` will now create a `Release.zip`
 file that contains a binary and `Assets`.
+
+
+I will return to this project eventually I promise :)))
+  -Scares, Nov 7, 2021
