@@ -5,7 +5,7 @@ import random
 
 import tkinter as Tkinter
 from tkinter import *
-from tkinter import (Tk, messagebox, ttk)
+from tkinter import (Tk, messagebox)
 from tkinter.filedialog import askopenfilename
 
 from Engine import * #Import all the important classes I made haha
@@ -24,9 +24,9 @@ goodIcon = "Assets/favi.ico" if (os.name == 'nt') else "@Assets/favi.xbm"
 
 root = Tk()
 root.title("Scares Scrambler Build "+buildNumber)
-root.geometry("310x600+100+100")
+root.geometry("+100+100")
 root.iconbitmap(goodIcon)
-#root.resizable(width=False, height=False)
+# root.resizable(width=False, height=False)
 
 '''
 Engines:
@@ -189,9 +189,9 @@ def enter_file(event=None):
     global newFileName
     global cnameLabel
     '''Chooses the files to use during corrupting'''
-    userFileWindow = Tk()
+    userFileWindow = Toplevel()
     userFileWindow.title("Enter filenames...")
-    userFileWindow.geometry("450x180+250+250")
+    userFileWindow.geometry("+250+250")
     userFileWindow.iconbitmap(goodIcon)
     userFileWindow.resizable(width=False, height=False)
 
@@ -254,13 +254,14 @@ def enter_file(event=None):
     applyButton.grid(row=4, column=1, columnspan=1, padx=10, pady=15)
 
     userFileWindow.bind("<Return>", lambda _: get_file_name(newFileText))
-    userFileWindow.mainloop()
 
 
 def select_file(event=None):
     global fileName
     '''Opens an 'open' window to select the file to corrupt'''
     fileName = askopenfilename()
+    if not fileName:
+        return
     cnameLabel["text"] = shorten_text(fileName, 25, "Front")
     if autoEndVar.get() == 1: #If the user requests to always get auto ends
         auto_end_switch() 
@@ -305,7 +306,7 @@ def get_file_name(text, event=None):
 
 def about_program_window(event=None):
     '''The about window'''
-    aboutWindow = Tk()
+    aboutWindow = Toplevel()
     
     aboutWindow.title("About Scares Scrambler Build "+buildNumber+" "+"("+versionNumber+")")
     aboutWindow.iconbitmap(goodIcon)
@@ -332,7 +333,7 @@ def about_program_window(event=None):
 
 def credits_window(event=None):
     '''Window to credit bugtesters and any other contributors'''
-    creditsWindow = Tk()
+    creditsWindow = Toplevel()
     creditsWindow.title("Scares Scrambler Build " +buildNumber+" "+"("+versionNumber+") Contributors")
     creditsWindow.iconbitmap(goodIcon)
     creditsWindow["bg"] = colorList[2]
@@ -349,12 +350,11 @@ def credits_window(event=None):
                                        "Ircluzar (Supporter, I think)", bg=colorList[2], fg=colorList[1])
     goodLogo = PhotoImage(master=creditsWindow, file=colorList[4])
     label3 = Label(creditsWindow, image=goodLogo)
+    label3.img = goodLogo
 
     label.pack()
     label2.pack()
     label3.pack()
-
-    creditsWindow.mainloop()
 
 
 def corrupt_file(event=None, determinedVariables=[]):
@@ -583,14 +583,13 @@ def corrupt_repeat_window(event=None):
 
     newFolder = False
 
-    repeatWindow = Tk()
+    repeatWindow = Toplevel()
     if themeVar.get() == 3: #Dubby theme
         repeatWindow.title("Dubby and Repeat")
     else:
         repeatWindow.title("Corrupt and Repeat")
         
     repeatWindow.iconbitmap(goodIcon)
-    repeatWindow.geometry("300x500")
 
     incFrame = Frame(repeatWindow, width=300, height=480)
 
@@ -630,15 +629,13 @@ def corrupt_repeat_window(event=None):
                           activeforeground=colorList[1])
     
     instructions.pack()
-    incFrame.pack()
+    incFrame.pack(padx=17, pady=10)
     for x in range(0, len(entries)):
         entries[x][0].grid(row=x+1, column=0, pady=5, sticky=W)
         entries[x][1].grid(row=x+1, column=1, columnspan=3, padx=10, sticky=W)
 
     corruptButton.pack(side="bottom", pady=5)
     newFolderCheck.pack(side="bottom", pady=5)
-
-    repeatWindow.mainloop()
 
 
 def corrupt_repeat(entries, event=None):
@@ -650,7 +647,7 @@ def corrupt_repeat(entries, event=None):
 
     if newFolder and ("newFolder" not in newFileName): #If we're making a new folder
         p = check_for_char(newFileName, "\\")
-        #print(__file__[:q], "wow")
+        # print(__file__[:q], "wow")
                 
         if p != False: #If the newFileName is a full path
             if not os.path.exists(newFileName[:p]+"\\newFolder"):
@@ -717,7 +714,7 @@ def save_presets_window(event=None):
     global newPresetWindow
     '''The UI for saving a preset'''
     
-    newPresetWindow = Tk()
+    newPresetWindow = Toplevel()
     newPresetWindow.title("Enter preset name...")
     newPresetWindow.geometry("300x100+250+250")
     newPresetWindow.iconbitmap(goodIcon)
@@ -739,7 +736,6 @@ def save_presets_window(event=None):
     newPresetButton.pack()
 
     newPresetWindow.bind("<Return>", lambda _: save_presets(newPresetEntry))
-    newPresetWindow.mainloop()
 
 
 def save_presets(newPresetEntry, event=None):
@@ -1037,9 +1033,8 @@ def folder_selector(textWidgets=[""], labels=[""], event=None):
     '''Custom folder path finder, because Tkinter doesn't have one'''
     global newFileName
     
-    main = Tk()
+    main = Toplevel()
     main.title("Select folder...")
-    main.geometry("300x340")
     main.iconbitmap(goodIcon)
     main["bg"] = colorList[2]
 
@@ -1253,7 +1248,7 @@ incValueLabel = Label(mainFrame, text="Inc Value")
 incValueEntry = Entry(mainFrame)
 autoEndButton = Button(mainFrame, text="Auto End")
 
-dividerLabel = Label(mainFrame, text="------------------------------------------------------------")
+dividerLabel = Label(mainFrame, text="-"*60)
 
 userFileLabel = Label(corruptButtonFrame, text="No file loaded. Press Alt+F to load one!")
 
