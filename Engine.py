@@ -5,6 +5,7 @@ import tkinter as Tkinter
 from tkinter import *
 from tkinter import (Tk, ttk)
 from tkinter.filedialog import askopenfilename
+from tkinter import messagebox
 
 import random
 import os
@@ -310,58 +311,58 @@ def find_engine_index(engine, value, where):
     return 0 #Make sure this works
 
 
-def singular_hex_convert(n):
-    '''Converts the numbers 10 to 15 to hex'''
-    newN = str(int(n))
-    if newN == "10":
-        newN = "a"
-    elif newN == "11":
-        newN = "b"
-    elif newN == "12":
-        newN = "c"
-    elif newN == "13":
-        newN = "d"
-    elif newN == "14":
-        newN = "e"
-    elif newN == "15":
-        newN = "f"
-
-    return newN
+def singular_hex_convert(num):
+    """Converts a single digit to its hexadecimal representation"""
+    hex_digits = "0123456789abcdef"
+    return hex_digits[int(num)]
 
 
 def hex_convert(number):
-    '''Converts the input to hexadecimal.'''
-    '''Might not work 100% yet'''
-    
-    if number != "": #Prevents errors when switching between hex and dec
-        tempNum = float(number)
-        newNum = [] #Holds the converted number
-        if tempNum < 0:
-            returnNum = "-0x" #The number to return
-        else:
-            returnNum = "0x"
-        decimalCounter = 0 #Counts the number of digits past the decimal
+    """Converts the input to hexadecimal."""
+    if number == "":
+        return ""
 
-        while tempNum % 1 != 0: #White the number still has decimal places
-            tempNum = tempNum * 16
-            decimalCounter += 1
+    tempNum = float(number)
 
-        while tempNum != 0: #Loop until whole number is converted
-            newNum.append(singular_hex_convert(tempNum%16)) #Adding each digit in reverse order
-            tempNum = tempNum // 16 #Add a rounding element somewhere
+    if tempNum == 0:
+        return "0x0"
 
-        if newNum == []: #If the number is zero
-            return "0x0"
+    is_negative = tempNum < 0
+    if is_negative:
+        tempNum = abs(tempNum)
 
-        for x in range(len(newNum)-1, -1, -1): #Going in reverse order through newNum
-            returnNum += newNum[x]
-            if x == decimalCounter and x != 0: #Adding the decimal back
-                returnNum += "."
+    integer_part = int(tempNum)
+    fractional_part = tempNum - integer_part
 
+    # Convert the integer part
+    integer_hex = []
+    if integer_part == 0:
+        integer_hex.append("0")
     else:
-        returnNum = ""
-            
-    return returnNum
+        while integer_part > 0:
+            integer_hex.append(singular_hex_convert(integer_part % 16))
+            integer_part //= 16
+
+    integer_hex = ''.join(reversed(integer_hex))
+
+    # Convert the fractional part
+    fractional_hex = []
+    while fractional_part != 0 and len(fractional_hex) < 10:  # Limiting the length to avoid infinite loops
+        fractional_part *= 16
+        fractional_digit = int(fractional_part)
+        fractional_hex.append(singular_hex_convert(fractional_digit))
+        fractional_part -= fractional_digit
+
+    fractional_hex = ''.join(fractional_hex)
+
+    hex_result = "0x" + integer_hex
+    if fractional_hex:
+        hex_result += "." + fractional_hex
+
+    if is_negative:
+        hex_result = "-" + hex_result
+
+    return hex_result
 
 
 def clear_textWidget(event, textWidget, textCondition=""):
